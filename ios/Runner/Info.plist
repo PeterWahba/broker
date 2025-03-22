@@ -45,12 +45,24 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	
+	<!-- 🔥 Firebase Remote Notification Delegate -->
 	<key>FirebaseAppDelegateProxyEnabled</key>
-<true/>
-<key>NSAppTransportSecurity</key>
-<dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
-</dict>
+	<true/>
+
+	<!-- 🌐 Allow HTTP URLs (for backend access) -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+
+	<!-- 📍 Location Permissions -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>نحتاج إلى موقعك لعرض العقارات القريبة منك.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>نستخدم موقعك لتحديد موقعك حتى أثناء الخلفية.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>نستخدم موقعك لتحديد الموقع بدقة سواء في الخلفية أو عند الاستخدام.</string>
 </dict>
 </plist>
