@@ -7,6 +7,20 @@
           <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyASFpQ0BJ99BZ-b19_2tGAka4sdB8E7tkE" />
+
+        <meta-data
+    android:name="com.facebook.sdk.ApplicationId"
+    android:value="@string/facebook_app_id"/>
+
+<activity android:name="com.facebook.FacebookActivity"
+    android:configChanges=
+        "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+    android:label="@string/app_name" />
+
+<provider android:authorities="com.facebook.app.FacebookContentProvider1065298598393601"
+    android:name="com.facebook.FacebookContentProvider"
+    android:exported="true" />
+    
         <activity
             android:name=".MainActivity"
             android:exported="true"

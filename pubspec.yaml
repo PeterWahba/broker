@@ -65,6 +65,7 @@ dependencies:
   firebase_messaging: ^15.2.4
   flutter_local_notifications: ^18.0.1
   flutter_plugin_android_lifecycle: ^2.0.24
+  facebook_app_events: ^0.19.6
 
 flutter_assets:
   assets_path: assets/

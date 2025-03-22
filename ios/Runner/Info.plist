@@ -64,5 +64,17 @@
 	<string>نستخدم موقعك لتحديد موقعك حتى أثناء الخلفية.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>نستخدم موقعك لتحديد الموقع بدقة سواء في الخلفية أو عند الاستخدام.</string>
+
+	<key>FacebookAppID</key>
+<string>1065298598393601</string>
+<key>FacebookDisplayName</key>
+<string>Broker App</string>
+<key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>fbapi</string>
+  <string>fb-messenger-api</string>
+  <string>fbauth2</string>
+  <string>fbshareextension</string>
+</array>
 </dict>
 </plist>
