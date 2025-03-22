@@ -45,7 +45,7 @@ class SignInView extends GetView<SignInController> {
             PasswordField(controller: controller.passwordController),
             16.hs,
             Align(
-              alignment: Alignment.topLeft,
+              alignment: Get.locale?.languageCode == 'ar' ? Alignment.topRight : Alignment.topLeft,
               child: TextButton(
                   onPressed: () {
                     Get.toNamed(Routes.forgetPassword);

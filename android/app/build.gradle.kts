@@ -39,6 +39,8 @@ android {
     buildTypes {
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = false  // Disable minification
+            isShrinkResources = false // Disable shrinking resources
         }
     }
 }

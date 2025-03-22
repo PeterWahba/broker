@@ -59,8 +59,8 @@ class AddPropertyImage extends StatelessWidget {
                 }
               },
               child: Container(
-                width: 100.w,
-                height: 100.h,
+                width: 90.w,
+                height: 90.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
@@ -141,8 +141,8 @@ class AddPropertyImage extends StatelessWidget {
                     ),
           )),
         child: Container(
-          width: 100.w,
-          height: 100.h,
+          width: 90.w,
+          height: 90.h,
           decoration: BoxDecoration(
              boxShadow: [
                     BoxShadow(

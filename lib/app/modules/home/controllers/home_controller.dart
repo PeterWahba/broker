@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../config/style/app_color.dart';
 import '../../../core/heplers/image_picker.dart';
 import '../../../core/heplers/map_utils.dart';
 import '../../../core/services/storage_service.dart';
@@ -20,9 +21,6 @@ class HomeController extends GetxController {
   final searchController = TextEditingController();
   final emailController = TextEditingController();
   final textSubjectController = TextEditingController();
-
-
-
 
   final HomeProvider _homeProvider = HomeProvider();
 
@@ -39,40 +37,38 @@ class HomeController extends GetxController {
   }
 
   // Map related variables
-   Completer<GoogleMapController> controller = Completer<GoogleMapController>();
+  Completer<GoogleMapController> controller = Completer<GoogleMapController>();
   final Rx<LatLng> currentPosition = Rx<LatLng>(const LatLng(0, 0));
   final RxString address = RxString('');
   final RxBool loadingAddress = RxBool(false);
- CameraPosition initialCameraPosition = const CameraPosition(
+  CameraPosition initialCameraPosition = const CameraPosition(
     target: LatLng(30.06263, 31.24967), // Center of Egypt
     zoom: 5,
   );
   void init([LatLng? location]) {
     if (location != null) {
-      initialCameraPosition = CameraPosition(
-        target: location,
-        zoom: 15,
-      );
+      initialCameraPosition = CameraPosition(target: location, zoom: 15);
       currentPosition.value = location;
     }
   }
 
-void onMapCreate(GoogleMapController mapController) {
-  if (controller.isCompleted) {
-    controller = Completer<GoogleMapController>(); // 🆕 Reset the controller
-  }
-  
-  controller.complete(mapController);
-}
+  void onMapCreate(GoogleMapController mapController) {
+    if (controller.isCompleted) {
+      controller = Completer<GoogleMapController>(); // 🆕 Reset the controller
+    }
 
+    controller.complete(mapController);
+  }
 
   void getCurrentPosition() {
-    MapUtils.getCurrentPosition().then((value) {
-      currentPosition.value = LatLng(value.latitude, value.longitude);
-      _moveCamera();
-    }).catchError((e) {
-      // Handle error if needed
-    });
+    MapUtils.getCurrentPosition()
+        .then((value) {
+          currentPosition.value = LatLng(value.latitude, value.longitude);
+          _moveCamera();
+        })
+        .catchError((e) {
+          // Handle error if needed
+        });
   }
 
   void _moveCamera() {
@@ -113,24 +109,18 @@ void onMapCreate(GoogleMapController mapController) {
 
   Future<void> addRate(double rate) async {
     final userId = StorageService.getData("userId") ?? 0; // Cache userId
-    final userRateData = {
-      "userId": userId,
-      "userRate": "${rate.toInt()}"
-    };
+    final userRateData = {"userId": userId, "userRate": "${rate.toInt()}"};
 
     final response = await _homeProvider.addRate(data: userRateData);
 
-    response.fold(
-      (l) {
-        _showMessage(
-          l['result']["success"] == "true"
-              ? AppStrings.successfulRating
-              : AppStrings.youHaveAlreadySubmittedYourRating,
-          isError: false,
-        );
-      },
-      (r) => _showMessage(r.message, isError: true),
-    );
+    response.fold((l) {
+      _showMessage(
+        l['result']["success"] == "true"
+            ? AppStrings.successfulRating
+            : AppStrings.youHaveAlreadySubmittedYourRating,
+        isError: false,
+      );
+    }, (r) => _showMessage(r.message, isError: true));
   }
 
   // Contact Us
@@ -145,7 +135,10 @@ void onMapCreate(GoogleMapController mapController) {
 
     final response = await _homeProvider.addContactUs(data: contactData);
     response.fold(
-      (l) => _showMessage(AppStrings.contactRequestSentSuccessfully, isError: false),
+      (l) => _showMessage(
+        AppStrings.contactRequestSentSuccessfully,
+        isError: false,
+      ),
       (r) => _showMessage(r.message, isError: true),
     );
   }
@@ -156,8 +149,7 @@ void onMapCreate(GoogleMapController mapController) {
       isError ? "Error" : "Success",
       message,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: isError ? Colors.redAccent : Colors.greenAccent,
-      colorText: Colors.white,
+      colorText: AppColors.primary,
     );
   }
 
@@ -174,6 +166,5 @@ void onMapCreate(GoogleMapController mapController) {
     init();
 
     getCurrentPosition();
-
   }
 }

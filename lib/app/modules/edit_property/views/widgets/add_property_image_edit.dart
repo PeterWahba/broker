@@ -66,8 +66,8 @@ class AddPropertyImageEdit extends StatelessWidget {
               }
             },
             child: Container(
-              width: 100.w,
-              height: 100.h,
+              width: 90.w,
+              height: 90.h,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(

@@ -48,7 +48,9 @@ class MapDetails extends StatelessWidget {
           AppImageView(
             url: advertisements.photos?[0] ?? "",
             height: 150.h,
-            width: 150.w,
+            width: 250.w,
+            fit: BoxFit.cover,
+            radius: BorderRadius.circular(8),
           ),
         ],
       ),

@@ -132,7 +132,7 @@ Map<String, String> ar = {
   AppStrings.rent: 'إيجار',
   AppStrings.minimumTime: 'الحد الأدنى من الوقت',
   AppStrings.documents: 'المستندات',
-  AppStrings.views: "فيو",
+  AppStrings.views: "المشاهدات",
   AppStrings.facilities: 'مرافق',
   AppStrings.water: 'ماء',
   AppStrings.electricity: 'كهرباء',

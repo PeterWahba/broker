@@ -42,21 +42,24 @@ class AddApartmentStage3 extends GetView<AddApartmentController> {
       body: Form(
         key: controller.thirdStageFormKey,
         child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
           children: [
             Text(AppStrings.propertyPhotos, style: AppTextStyle.font16black400),
             16.hs,
             Obx(() {
-              return Wrap(
-                spacing: 16.w,
-                runSpacing: 8.w,
-                children: List.generate(
-                  controller.imageFiles.length < 3
-                      ? 3
-                      : controller.imageFiles.length,
-                  (index) => AddPropertyImage(
-                    index: index,
-                    controller: controller,
+              return Align(
+                alignment: Alignment.center,
+                child: Wrap(
+                  spacing: 12.w,
+                  runSpacing: 8.w,
+                  children: List.generate(
+                    controller.imageFiles.length < 3
+                        ? 3
+                        : controller.imageFiles.length,
+                    (index) => AddPropertyImage(
+                      index: index,
+                      controller: controller,
+                    ),
                   ),
                 ),
               );

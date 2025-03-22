@@ -57,8 +57,6 @@ class ChangePasswordController extends GetxController {
         if (response.statusCode == 200) {
           AppUtils.resetCode = response.data?.result;
           AppUtils.email = emailController.text;
-          Get.snackbar("Success", "Code sent: ${response.data?.result}",          colorText: AppColors.primary
-);
           Get.toNamed(Routes.verifyForgetPassword);
         } else {
           _showError("Invalid credentials");
@@ -83,8 +81,6 @@ class ChangePasswordController extends GetxController {
             data: changePasswordData);
 
         if (response.statusCode == 200) {
-          Get.snackbar("Success", "Logged in successfully",          colorText: AppColors.primary
-);
           Get.offAllNamed(Routes.signIn);
         } else {
           _showError("Invalid credentials");
