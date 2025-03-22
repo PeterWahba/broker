@@ -83,7 +83,7 @@ class ApartmentFilterScreen extends StatelessWidget {
               isSelected: selectedIndex == index,
               onTap: () {
                 homeController.selectedIndexNotifier.value = index;
-                layoutController.getAllAdvertisement(index);
+                layoutController.getAllAdvertisement(index: index);
                 layoutController.resetFilters();
               },
             );

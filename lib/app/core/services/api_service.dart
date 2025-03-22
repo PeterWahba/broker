@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:broker/app/config/utils/app_utils/api_constans.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_utils/src/extensions/export.dart';
 import '../../config/utils/exceptions/exceptions.dart';
 import '../model/response_model.dart';
 
@@ -30,6 +32,7 @@ class ApiService {
     _dio.options.headers = {
       'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
       'Accept': 'application/json',
+      'LanguageCode':Get.locale?.languageCode??"ar"
     };
   }
 

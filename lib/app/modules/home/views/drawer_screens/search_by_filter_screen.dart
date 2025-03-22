@@ -214,7 +214,7 @@ class SearchByFilterScreen extends StatelessWidget {
             title: AppStrings.search,
             onPressed: () {
               controller.getAllAdvertisement(
-                controller.selectedPropertyTypeId.value ?? 0,
+                searchByFilter: true
               );
               Get.back();
             },
