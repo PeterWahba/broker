@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/style/app_color.dart';
 import '../../../config/utils/app_utils/app_utils.dart';
+import '../../../config/widgets/pop_ups/multi_map_details.dart';
 import '../../../core/services/storage_service.dart';
 import '../../add_property/data/models/get_all_governates_model.dart';
 import '../data/model/create_favorite_response_model.dart';
@@ -502,13 +503,26 @@ class LayoutController extends GetxController {
             .toList();
 
     for (Advertisements ad in advertisements ?? []) {
+      final sameLocationAds =
+          advertisements
+              ?.where(
+                (otherAd) =>
+                    otherAd.latitude == ad.latitude &&
+                    otherAd.longitude == ad.longitude,
+              )
+              .toList();
+
       final marker = Marker(
         onTap: () {
           if (Get.context != null) {
             showDialog(
               barrierDismissible: false,
               context: Get.context!,
-              builder: (context) => MapDetails(advertisements: ad),
+              builder:
+                  (context) =>
+                      sameLocationAds != null && sameLocationAds.length > 1
+                          ? MultiMapDetails(advertisements: sameLocationAds)
+                          : MapDetails(advertisements: ad),
             );
           }
         },

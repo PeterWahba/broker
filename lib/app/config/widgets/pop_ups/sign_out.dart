@@ -48,14 +48,20 @@ class SignOut extends StatelessWidget {
           ),
           16.hs,
           Text(
-            AppStrings.areYouSureToSignOut,
+            StorageService.getData("token") == null &&
+                      StorageService.getData("userId") == null
+                  ? AppStrings.signIn
+                  : AppStrings.areYouSureToSignOut,
             textAlign: TextAlign.center,
             style: AppTextStyle.font16black400,
           ),
         ],
       ),
       actions: [
-        AppButton1(title: AppStrings.signout, onPressed: () {
+        AppButton1(title: StorageService.getData("token") == null &&
+                      StorageService.getData("userId") == null
+                  ? AppStrings.signIn
+                  : AppStrings.signout, onPressed: () {
                     Get.offAllNamed(Routes.signIn);
                     StorageService.removeAll();
 

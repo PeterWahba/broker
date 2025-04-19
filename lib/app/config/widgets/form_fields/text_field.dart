@@ -16,7 +16,7 @@ class TextFields extends StatelessWidget {
     return TextFormField(
       controller: controller,
       validator: ValidationForm.nameValidator,
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.text,
       minLines: 1,
       maxLines: 3,
       decoration: InputDecoration(

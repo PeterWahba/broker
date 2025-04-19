@@ -21,7 +21,7 @@ class EmailField extends StatelessWidget {
       readOnly: isReadOnly,
       controller: controller,
       validator: ValidationForm.emailValidator,
-      keyboardType: TextInputType.name,
+      keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
          
         icon:  AppImageView(svgPath: Assets.assetsSvgEmail,height: 24.h,width: 24.w,),

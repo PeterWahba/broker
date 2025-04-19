@@ -15,66 +15,77 @@ import '../controllers/favorites_controller.dart';
 
 class FavoritesView extends GetView<FavoritesController> {
   @override
-  final FavoritesController controller =
-      Get.put<FavoritesController>(FavoritesController());
+  final FavoritesController controller = Get.put<FavoritesController>(
+    FavoritesController(),
+  );
   FavoritesView({super.key});
   @override
   Widget build(BuildContext context) {
     return StorageService.getData("token") == null &&
-                    StorageService.getData("userId") == null
-                ? PleaseLoginScreen(): Obx(() {
-      return Stack(
-        children: [
-          Scaffold(
-              key: controller.scaffoldKey,
-              drawer: DrawerWidget(),
-              appBar: AppBar(
-                // actions: [
-                //   TextButton(
-                //       onPressed: () {
-                //         showDialog(
-                //             context: context,
-                //             builder: (context) => ClearAllFavorites());
-                //       },
-                //       child: Text(AppStrings.clearAll))
-                // ],
-                leading: IconButton(
-                  onPressed: () {
-                    controller.scaffoldKey.currentState!.openDrawer();
-                  },
-                  icon: Icon(
-                    Icons.menu,
+            StorageService.getData("userId") == null
+        ? PleaseLoginScreen()
+        : Obx(() {
+          return Stack(
+            children: [
+              Scaffold(
+                key: controller.scaffoldKey,
+                drawer: DrawerWidget(),
+                appBar: AppBar(
+                  // actions: [
+                  //   TextButton(
+                  //       onPressed: () {
+                  //         showDialog(
+                  //             context: context,
+                  //             builder: (context) => ClearAllFavorites());
+                  //       },
+                  //       child: Text(AppStrings.clearAll))
+                  // ],
+                  leading: IconButton(
+                    onPressed: () {
+                      controller.scaffoldKey.currentState!.openDrawer();
+                    },
+                    icon: Icon(Icons.menu),
                   ),
+                  title: Text(AppStrings.favorites),
                 ),
-                title: Text(AppStrings.favorites),
+                body: RefreshIndicator(
+                  onRefresh: () async {
+                    return await Get.find<LayoutController>().getFavorites();
+                  },
+                  child: Obx(() {
+                    return Get.find<LayoutController>()
+                                .favorites
+                                .value
+                                ?.favorites
+                                ?.isNotEmpty ??
+                            false
+                        ? ListView.separated(
+                          itemBuilder:
+                              (context, index) => FavoritesItem(
+                                favorites:
+                                    Get.find<LayoutController>()
+                                        .favorites
+                                        .value
+                                        ?.favorites?[index],
+                              ),
+                          separatorBuilder: (context, index) => 10.hs,
+                          itemCount:
+                              Get.find<LayoutController>()
+                                  .favorites
+                                  .value
+                                  ?.favorites
+                                  ?.length ??
+                              0,
+                        )
+                        : EmptyFavorite();
+                  }),
+                ),
               ),
-              body: Obx((){
-                return Get.find<LayoutController>()
-                            .favorites
-                            .value
-                            ?.favorites
-                            ?.isNotEmpty ??
-                        false
-                    ? ListView.separated(
-                  itemBuilder: (context, index) => FavoritesItem(
-                        favorites: Get.find<LayoutController>()
-                            .favorites
-                            .value
-                            ?.favorites?[index],
-                      ),
-                  separatorBuilder: (context, index) => 10.hs,
-                  itemCount: Get.find<LayoutController>()
-                          .favorites
-                          .value
-                          ?.favorites
-                          ?.length ??
-                      0):EmptyFavorite();
-              })),
-          Get.find<LayoutController>().getFavoritesLoading.value == true
-              ? const LoadingWidget()
-              : const SizedBox()
-        ],
-      );
-    });
+              Get.find<LayoutController>().getFavoritesLoading.value == true
+                  ? const LoadingWidget()
+                  : const SizedBox(),
+            ],
+          );
+        });
   }
 }

@@ -17,8 +17,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:image_picker/image_picker.dart';
 
-import '../../../core/heplers/image_picker.dart';
 import '../../../core/heplers/map_utils.dart';
 import '../../../core/services/storage_service.dart';
 import '../../home/data/models/suggestion_model.dart';
@@ -143,7 +143,7 @@ class AddApartmentController extends GetxController {
           "Error",
           AppStrings.pleaseSelectLocation,
           snackPosition: SnackPosition.BOTTOM,
-          colorText: AppColors.primary
+          colorText: AppColors.primary,
         );
       } else {
         Get.toNamed(Routes.addApartmentStage2);
@@ -166,8 +166,7 @@ class AddApartmentController extends GetxController {
           "Error",
           AppStrings.pleaseAddAtLeastOneImage,
           snackPosition: SnackPosition.BOTTOM,
-                    colorText: AppColors.primary
-
+          colorText: AppColors.primary,
         );
       } else {
         Get.toNamed(Routes.addApartmentStage4);
@@ -371,16 +370,44 @@ class AddApartmentController extends GetxController {
     super.onClose();
   }
 
-  void addImages(source) async {
-    var image = await ImagePickerUtils.getImage(source: source);
-    if (image != null) {
-      String imageName =
-          image.path.split('/').last; // حفظ اسم الصورة النهائي فقط
-      imageFiles.add(image); // إضافة الصورة إلى القائمة الأصلية
-      uploadImage(image);
+  void addImages(ImageSource source) async {
+    // Check how many more images can be added
+    int remainingSlots = 6 - imageFiles.length;
 
-      imageNames.add(imageName); // إضافة اسم الصورة إلى القائمة الجديدة
-      // طباعة اسم الصورة النهائي فقط
+    if (remainingSlots <= 0) {
+      // You can show a warning or toast here
+      _showError("You can only upload up to 6 images.");
+      return;
+    }
+
+    if (source == ImageSource.gallery) {
+      List<XFile>? images = await ImagePicker().pickMultiImage();
+
+      if (images.isNotEmpty) {
+        // Take only up to the allowed number of images
+        List<XFile> limitedImages = images.take(remainingSlots).toList();
+
+        for (var image in limitedImages) {
+          String imageName = image.path.split('/').last;
+          File file = File(image.path);
+          imageFiles.add(file);
+          uploadImage(file);
+          imageNames.add(imageName);
+        }
+      }
+    } else if (source == ImageSource.camera) {
+      if (imageFiles.length < 6) {
+        XFile? image = await ImagePicker().pickImage(source: source);
+        if (image != null) {
+          String imageName = image.path.split('/').last;
+          File file = File(image.path);
+          imageFiles.add(file);
+          uploadImage(file);
+          imageNames.add(imageName);
+        }
+      } else {
+        _showError("You can only upload up to 6 images.");
+      }
     }
   }
 
@@ -458,7 +485,8 @@ class AddApartmentController extends GetxController {
       isGetAllGovLoading.value = false;
     }, (r) => _showError(r.message));
   }
-    Future<void> getAllDurations() async {
+
+  Future<void> getAllDurations() async {
     final getAllDurationsData = {"start": "0", "length": "100"};
 
     final response = await _addPropertyProvider.getAllDurations(
@@ -469,7 +497,8 @@ class AddApartmentController extends GetxController {
       allDurations.value = GetAllDurationsModel.fromJson(l['result']);
     }, (r) => _showError(r.message));
   }
-      Future<void> checkCoupon() async {
+
+  Future<void> checkCoupon() async {
     final getAllDurationsData = {"keyword": discountCode.text};
 
     final response = await _addPropertyProvider.checkCoupon(
@@ -477,13 +506,12 @@ class AddApartmentController extends GetxController {
     );
 
     response.fold((l) async {
-            getDiscount.value = GetDiscountModel.fromJson(l['result']);
-            if (getDiscount.value?.success==false) {
-              _showError("Invalid Discount Code");
-            }else{
-              discount.value=getDiscount.value?.discount;
-            }
-
+      getDiscount.value = GetDiscountModel.fromJson(l['result']);
+      if (getDiscount.value?.success == false) {
+        _showError("Invalid Discount Code");
+      } else {
+        discount.value = getDiscount.value?.discount;
+      }
     }, (r) => _showError(r.message));
   }
 
@@ -501,10 +529,11 @@ class AddApartmentController extends GetxController {
 
         if (placemarks.isNotEmpty) {
           Placemark place = placemarks.first;
-          List<String> addressParts = [
-            place.street,
-            place.locality,
-          ].whereType<String>().where((part) => part.isNotEmpty).toList();
+          List<String> addressParts =
+              [
+                place.street,
+                place.locality,
+              ].whereType<String>().where((part) => part.isNotEmpty).toList();
 
           selectedAddress.value = addressParts.join(', ');
 
@@ -608,7 +637,10 @@ class AddApartmentController extends GetxController {
                     left: 60.w,
                     right: 60.w,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w,vertical: 20.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24.w,
+                        vertical: 20.h,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
@@ -620,10 +652,12 @@ class AddApartmentController extends GetxController {
                           ),
                         ],
                       ),
-                      child: Obx(() => Text(
-                        selectedAddress.value,
-                        style: TextStyle(fontSize: 14.sp),
-                      )),
+                      child: Obx(
+                        () => Text(
+                          selectedAddress.value,
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -715,7 +749,12 @@ class AddApartmentController extends GetxController {
 
       response.fold((l) {}, (r) => _showError(r.message));
     } catch (e) {
-      Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM,colorText: AppColors.primary);
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: AppColors.primary,
+      );
     }
   }
 
@@ -737,13 +776,22 @@ class AddApartmentController extends GetxController {
         }
       }, (r) => _showError(r.message));
     } catch (e) {
-      Get.snackbar("Error", e.toString(), snackPosition: SnackPosition.BOTTOM,          colorText: AppColors.primary
-);
+      Get.snackbar(
+        "Error",
+        e.toString(),
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: AppColors.primary,
+      );
     }
   }
 
   void _showError(String message) {
-    Get.snackbar("Error", message, snackPosition: SnackPosition.BOTTOM,colorText: AppColors.primary);
+    Get.snackbar(
+      "Error",
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      colorText: AppColors.primary,
+    );
   }
 
   void clearData() {

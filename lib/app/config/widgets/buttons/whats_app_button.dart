@@ -1,3 +1,4 @@
+import 'package:broker/app/config/utils/app_utils/app_strings.dart';
 import 'package:broker/app/core/extentions/extention.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +33,7 @@ class WhatsAppButton extends StatelessWidget {
           ),
           4.ws,
           Text(
-            'WhatsApp',
+            AppStrings.whatsApp,
             style: AppTextStyle.font16white400,
           ),
         ],

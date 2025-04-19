@@ -72,7 +72,7 @@ class SignInController extends GetxController {
           _showError(AppStrings.invalidCredentials);
         }
       } catch (e) {
-        _showError("An error occurred during login");
+        _showError(AppStrings.invalidCredentials);
       } finally {
         isLoading.value = false;
       }

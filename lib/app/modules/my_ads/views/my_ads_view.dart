@@ -21,68 +21,83 @@ class MyAdsView extends GetView<MyAdsController> {
     Get.put(MyAdsController());
 
     return StorageService.getData("token") == null &&
-                    StorageService.getData("userId") == null
-                ? PleaseLoginScreen():Obx(() {
-      return Stack(
-        children: [
-          Scaffold(
-              key: controller.scaffoldKey,
-              drawer: DrawerWidget(),
-              appBar: AppBar(
-                actions: [
-                 Get.find<LayoutController>()
-                            .getAllAdsForUserModel
-                            .value
-                            ?.advertisements
-                            ?.isNotEmpty ??
-                        false
-                    ? TextButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) => ClearAllAds());
-                      },
-                      child: Text(AppStrings.clearAll)):SizedBox.shrink()
-                ],
-                leading: IconButton(
-                  onPressed: () {
-                    controller.scaffoldKey.currentState!.openDrawer();
-                  },
-                  icon: Icon(
-                    Icons.menu,
-                  ),
-                ),
-                title: Text(AppStrings.myAds),
-              ),
-              body: Obx(() {
-                return Get.find<LayoutController>()
-                            .getAllAdsForUserModel
-                            .value
-                            ?.advertisements
-                            ?.isNotEmpty ??
-                        false
-                    ? ListView.separated(
-                        itemBuilder: (context, index) => AddsItem(
-                          advertisements: Get.find<LayoutController>()
-                              .getAllAdsForUserModel
-                              .value
-                              ?.advertisements?[index],
-                        ),
-                        separatorBuilder: (context, index) => 10.hs,
-                        itemCount: Get.find<LayoutController>()
+            StorageService.getData("userId") == null
+        ? PleaseLoginScreen()
+        : Obx(() {
+          return Stack(
+            children: [
+              Scaffold(
+                key: controller.scaffoldKey,
+                drawer: DrawerWidget(),
+                appBar: AppBar(
+                  actions: [
+                    Get.find<LayoutController>()
                                 .getAllAdsForUserModel
                                 .value
                                 ?.advertisements
-                                ?.length ??
-                            0,
-                      )
-                    : EmptyAds();
-              })),
-          Get.find<LayoutController>().getAllAdvertisementForUserLoading.value == true
-              ? const LoadingWidget()
-              : const SizedBox()
-        ],
-      );
-    });
+                                ?.isNotEmpty ??
+                            false
+                        ? TextButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => ClearAllAds(),
+                            );
+                          },
+                          child: Text(AppStrings.clearAll),
+                        )
+                        : SizedBox.shrink(),
+                  ],
+                  leading: IconButton(
+                    onPressed: () {
+                      controller.scaffoldKey.currentState!.openDrawer();
+                    },
+                    icon: Icon(Icons.menu),
+                  ),
+                  title: Text(AppStrings.myAds),
+                ),
+                body: RefreshIndicator(
+                  onRefresh: () async {
+                    return await Get.find<LayoutController>()
+                        .getAllAdvertisementForUser();
+                  },
+                  child: Obx(() {
+                    return Get.find<LayoutController>()
+                                .getAllAdsForUserModel
+                                .value
+                                ?.advertisements
+                                ?.isNotEmpty ??
+                            false
+                        ? ListView.separated(
+                          itemBuilder:
+                              (context, index) => AddsItem(
+                                advertisements:
+                                    Get.find<LayoutController>()
+                                        .getAllAdsForUserModel
+                                        .value
+                                        ?.advertisements?[index],
+                              ),
+                          separatorBuilder: (context, index) => 10.hs,
+                          itemCount:
+                              Get.find<LayoutController>()
+                                  .getAllAdsForUserModel
+                                  .value
+                                  ?.advertisements
+                                  ?.length ??
+                              0,
+                        )
+                        : EmptyAds();
+                  }),
+                ),
+              ),
+              Get.find<LayoutController>()
+                          .getAllAdvertisementForUserLoading
+                          .value ==
+                      true
+                  ? const LoadingWidget()
+                  : const SizedBox(),
+            ],
+          );
+        });
   }
 }

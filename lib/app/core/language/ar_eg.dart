@@ -5,6 +5,7 @@ Map<String, String> ar = {
   AppStrings.pending: "قيد الانتظار",
 
     AppStrings.all: "الكل",
+    AppStrings.whatsApp: "واتس اب",
   AppStrings.disconnected: "للاسف انت غير متصل بالانترنت",
 
   AppStrings.apartmentsForSale: "شقق للبيع",
@@ -64,7 +65,7 @@ Map<String, String> ar = {
   AppStrings.youHaveAlreadySubmittedYourRating: "لقد قمت بالفعل بتقديم تقييمك",
   AppStrings.contactRequestSentSuccessfully: "تم إرسال طلب الاتصال بنجاح!",
   AppStrings.landArea: "مساحة الأرض",
-  AppStrings.invalidCredentials: "بيانات الاعتماد غير صالحة",
+  AppStrings.invalidCredentials: "لقد أدخلت رقم موبايل أو كلمة مرور غير صحيحة",
   AppStrings.im: "أنا .....",
   AppStrings.payment: "الدفع",
   AppStrings.premiumAd: "إعلان مميز",
@@ -109,7 +110,7 @@ Map<String, String> ar = {
   AppStrings.chalet: 'شاليه',
   AppStrings.building: 'مبنى',
   AppStrings.office: 'مكتب',
-  AppStrings.shop: 'متجر',
+  AppStrings.shop: 'محل',
   AppStrings.land: 'أرض',
   AppStrings.propertyStatus: 'حالة العقار',
   AppStrings.finishing: 'التشطيب',

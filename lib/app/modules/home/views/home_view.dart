@@ -19,8 +19,6 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final layoutController = Get.find<LayoutController>();
 
-    // Check the current locale
-    final isArabic = Get.locale?.languageCode == 'ar';
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -30,8 +28,7 @@ class HomeView extends GetView<HomeController> {
         },
         child: const Icon(Icons.my_location),
       ),
-      floatingActionButtonLocation:
-          isArabic ? FloatingActionButtonLocation.endFloat : FloatingActionButtonLocation.startFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       drawer: DrawerWidget(),
       key: controller.scaffoldKey,
       appBar: PreferredSize(
@@ -51,35 +48,33 @@ class HomeView extends GetView<HomeController> {
           alignment: Alignment.topCenter,
           children: [
             GoogleMap(
-            initialCameraPosition: controller.initialCameraPosition,
-            onMapCreated: controller.onMapCreate,
-            onCameraIdle: ()async{
-              controller.getAddress();
-            },
-            onCameraMove: controller.onCameraMove,
-            myLocationEnabled: true,
-            mapType: MapType.normal, // Use MapType.none for minimal rendering
-            trafficEnabled: false,
-            buildingsEnabled: false,
-            indoorViewEnabled: false,
-            // padding: EdgeInsets.only(bottom: 140.h),
-                          markers: layoutController.markers.value ?? {},
+              initialCameraPosition: controller.initialCameraPosition,
+              onMapCreated: controller.onMapCreate,
+              onCameraIdle: () async {
+                controller.getAddress();
+              },
+              onCameraMove: controller.onCameraMove,
+              myLocationEnabled: true,
+              mapType: MapType.normal, // Use MapType.none for minimal rendering
+              trafficEnabled: false,
+              buildingsEnabled: false,
+              indoorViewEnabled: false,
+              // padding: EdgeInsets.only(bottom: 140.h),
+              markers: layoutController.markers.value ?? {},
 
-            zoomGesturesEnabled: true,
-            scrollGesturesEnabled: true,
-            rotateGesturesEnabled: true,
-            tiltGesturesEnabled: true,
-            compassEnabled: false,
-            myLocationButtonEnabled: false,
-            zoomControlsEnabled: true,
-            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}.toSet(),
-            // gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}..add(
-            //     Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer())),
-          ),
-            SizedBox(
-              height: 60.h,
-              child: ApartmentFilterScreen(),
+              zoomGesturesEnabled: true,
+              scrollGesturesEnabled: true,
+              rotateGesturesEnabled: true,
+              tiltGesturesEnabled: true,
+              compassEnabled: false,
+              myLocationButtonEnabled: false,
+              zoomControlsEnabled: true,
+              gestureRecognizers:
+                  <Factory<OneSequenceGestureRecognizer>>{}.toSet(),
+              // gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{}..add(
+              //     Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer())),
             ),
+            SizedBox(height: 60.h, child: ApartmentFilterScreen()),
           ],
         );
       }),

@@ -13,8 +13,9 @@ import '../controllers/list_view_controller.dart';
 
 class ListViewView extends GetView<ListViewController> {
   @override
-  final ListViewController controller =
-      Get.put<ListViewController>(ListViewController());
+  final ListViewController controller = Get.put<ListViewController>(
+    ListViewController(),
+  );
   ListViewView({super.key});
   @override
   Widget build(BuildContext context) {
@@ -22,33 +23,44 @@ class ListViewView extends GetView<ListViewController> {
       return Stack(
         children: [
           Scaffold(
-              drawer: DrawerWidget(),
-              key: controller.scaffoldKey,
-              appBar: PreferredSize(
-                preferredSize: Size.fromHeight(60.0.h),
-                child: ListViewAppBar(
-                  onPressed: () {
-                    controller.scaffoldKey.currentState!.openDrawer();
-                  },
-                ),
+            drawer: DrawerWidget(),
+            key: controller.scaffoldKey,
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(60.0.h),
+              child: ListViewAppBar(
+                onPressed: () {
+                  controller.scaffoldKey.currentState!.openDrawer();
+                },
               ),
-              body: ListView.separated(
+            ),
+            body: RefreshIndicator(
+              onRefresh: () async {
+                return await Get.find<LayoutController>().getAllAdvertisement();
+              },
+              child: ListView.separated(
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
-                itemBuilder: (context, index) => ListItem(
-                  advertisements: Get.find<LayoutController>()
-                      .allAdsModel
-                      .value?.advertisements?[index],
-                ),
+                itemBuilder:
+                    (context, index) => ListItem(
+                      advertisements:
+                          Get.find<LayoutController>()
+                              .allAdsModel
+                              .value
+                              ?.advertisements?[index],
+                    ),
                 separatorBuilder: (context, index) => 10.hs,
-                itemCount: Get.find<LayoutController>()
+                itemCount:
+                    Get.find<LayoutController>()
                         .allAdsModel
-                        .value?.advertisements
+                        .value
+                        ?.advertisements
                         ?.length ??
                     0,
-              )),
+              ),
+            ),
+          ),
           Get.find<LayoutController>().isLoading.value == true
               ? const LoadingWidget()
-              : const SizedBox()
+              : const SizedBox(),
         ],
       );
     });
