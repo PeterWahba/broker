@@ -14,6 +14,7 @@ import 'package:oktoast/oktoast.dart';
 import 'app/core/heplers/localization_helper.dart';
 import 'app/core/services/storage_service.dart';
 import 'app/routes/app_pages.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -21,14 +22,12 @@ void main() async {
   final facebookAppEvents = FacebookAppEvents();
 
   // Log app launch event
-  facebookAppEvents.logEvent(
+  await facebookAppEvents.logEvent(
     name: 'app_launch',
-    parameters: {
-      'launch_time': DateTime.now().toIso8601String(),
-    },
+    parameters: {'launch_time': DateTime.now().toIso8601String()},
   );
 
-  await GetStorage.init(); 
+  await GetStorage.init();
   await ScreenUtil.ensureScreenSize();
   await Connectivity().checkConnectivity();
 

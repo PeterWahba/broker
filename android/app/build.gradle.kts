@@ -51,7 +51,7 @@ flutter {
 
 dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx") // ✅ Firebase dependency example
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3") // ✅ Correct dependency type
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4") // ✅ Correct dependency type
     implementation("com.facebook.android:facebook-android-sdk:16.3.0")
 }
 
