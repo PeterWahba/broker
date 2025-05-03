@@ -19,7 +19,8 @@ class PropertyDetailsInfoItem extends StatelessWidget {
     super.key,
     required this.title,
     required this.value,
-    required this.icon,  this.isLocation=false,
+    required this.icon,
+    this.isLocation = false,
   });
 
   @override
@@ -34,7 +35,15 @@ class PropertyDetailsInfoItem extends StatelessWidget {
           color: AppColors.primary,
         ),
         Text("$title :", style: AppTextStyle.font14black400),
-        Text(value, style:isLocation?AppTextStyle.font14primary600.copyWith(decoration: TextDecoration.underline): AppTextStyle.font14black600),
+        Text(
+          value,
+          style:
+              isLocation
+                  ? AppTextStyle.font14primary600.copyWith(
+                    decoration: TextDecoration.underline,
+                  )
+                  : AppTextStyle.font14black600,
+        ),
       ],
     );
   }
@@ -94,7 +103,7 @@ class PropertyDetailsInfo extends StatelessWidget {
               value: "${details?.price}",
               icon: Assets.assetsSvgPrice,
             ),
-        details?.type == 3
+        details?.type == 3 && details?.agreementStatusId == 2
             ? PropertyDetailsInfoItem(
               title: AppStrings.minimumTime,
               value: AppStrings.threeDays,

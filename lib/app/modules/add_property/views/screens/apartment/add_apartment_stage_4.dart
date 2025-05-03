@@ -143,7 +143,7 @@ class AddApartmentStage4 extends GetView<AddApartmentController> {
                         ),
                       ],
                     )
-                  : SizedBox(),
+                  : SizedBox.shrink(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

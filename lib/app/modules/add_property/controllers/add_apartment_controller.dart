@@ -304,7 +304,12 @@ class AddApartmentController extends GetxController {
 
   void saveDataFromForthStage() {
     forthApartmentStageData.value = {
-      "price": selectedAdType.value != 3 ? priceController.text : "0",
+      "price":
+          selectedAdType.value == 3 && selectedContractType.value == 1
+              ? dayController.text == ""
+                  ? weekController.text
+                  : dayController.text
+              : priceController.text,
       "rent":
           selectedContractType.value == 1 && selectedAdType.value != 3
               ? "${rent.value + 1}"

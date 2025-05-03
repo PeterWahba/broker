@@ -43,7 +43,7 @@ class HomeController extends GetxController {
   final RxBool loadingAddress = RxBool(false);
   CameraPosition initialCameraPosition = const CameraPosition(
     target: LatLng(30.06263, 31.24967), // Center of Egypt
-    zoom: 5,
+    zoom: 7,
   );
   void init([LatLng? location]) {
     if (location != null) {
@@ -63,7 +63,19 @@ class HomeController extends GetxController {
   void getCurrentPosition() {
     MapUtils.getCurrentPosition()
         .then((value) {
-          currentPosition.value = LatLng(value.latitude, value.longitude);
+          final position = LatLng(value.latitude, value.longitude);
+
+          // Check if the position is outside Egypt
+          if (position.latitude < 22.0 ||
+              position.latitude > 31.5 ||
+              position.longitude < 25.0 ||
+              position.longitude > 35.0) {
+            // Set to Egypt's center if outside bounds
+            currentPosition.value = const LatLng(30.06263, 31.24967);
+          } else {
+            currentPosition.value = position;
+          }
+
           _moveCamera();
         })
         .catchError((e) {
@@ -75,7 +87,7 @@ class HomeController extends GetxController {
     MapUtils.moveCamera(
       controller: controller,
       target: currentPosition.value,
-      zoom: 15,
+      zoom: 7,
     );
   }
 
